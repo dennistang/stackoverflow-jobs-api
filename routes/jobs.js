@@ -32,6 +32,8 @@ serialize = function(obj) {
 /**
  * Crawls StackOverflow Jobs page based on query parameters provided.
  * 
+ * @param {string} searchTerm - keywords, e.g., node, ruby, etc.
+ * @param {string} type - job type, e.g., permanent or contract
  * @param {string} location - Location, e.g., Berlin, Germany, Pasadena
  * @param {number} range - Location in distanceUnits, e.g., 20, 50, 100
  * @param {string} distanceUnits - Unit of distance, e.g., Miles, Kilometers
