@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var keenio = require('express-keenio');
 
 var routes = require('./routes/index');
 var jobs = require('./routes/jobs');
@@ -21,6 +22,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+if (app.get('env') === 'production') {
+  keenio.configure({ 
+    client: {
+      projectId: process.env.KEEN_PROJECT_ID, 
+      writeKey:  process.env.KEEN_WRITE_KEY
+    } 
+  });
+  
+  app.use(keenio.handleAll());
+}
 
 app.use('/', routes);
 app.use('/jobs', jobs);
