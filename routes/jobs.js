@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var x = require('x-ray')({
+let express = require('express');
+let router = express.Router();
+let x = require('x-ray')({
   filters: {
     trim: function (value) {
       return typeof value === 'string' ? value.trim() : value
@@ -18,9 +18,9 @@ var x = require('x-ray')({
 });
 
 serialize = function(obj) {
-  var queryString = [];
+  let queryString = [];
 
-  for (var key in obj) {
+  for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       queryString.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
     }
@@ -43,10 +43,15 @@ serialize = function(obj) {
  * @param {number} pg - page offset, e.g., 1, 2, 3, ... n
  */
 router.get('/', function(req, res, next) {
+  res.setHeader('Content-Type', 'application/json');
+  let response = {
+    metadata: {},
+    data: []
+  };
 
   let url = 'http://stackoverflow.com/jobs?' + serialize(req.query);
 
-  var stream = x(url, 'div.-job', [{
+  x(url, 'div.-job', [{
     id: 'span.fav-toggle@data-jobid',
     title: '.-title h1 | trim',
     salary: '.-title .salary | trim',
@@ -59,9 +64,16 @@ router.get('/', function(req, res, next) {
     relocation: '.metadata .relocation | boolean',
     remote: '.metadata .remote | boolean',
     date: '.posted | trim'
-  }]).stream();
+  }])(function(err, jobs) {
+    if (err) { console.error(err); }
 
-  stream.pipe(res);
+    response.metadata.hasMore = jobs.length === 25;
+
+    response.data = jobs;
+    
+    res.send(response);
+  });
+
 });
 
 module.exports = router;
