@@ -31,7 +31,7 @@ serialize = function(obj) {
 
 /**
  * Crawls StackOverflow Jobs page based on query parameters provided.
- * s&offersvisasponsorship=true&pg=2
+ * 
  * @param {string} location - Location, e.g., Berlin, Germany, Pasadena
  * @param {number} range - Location in distanceUnits, e.g., 20, 50, 100
  * @param {string} distanceUnits - Unit of distance, e.g., Miles, Kilometers
