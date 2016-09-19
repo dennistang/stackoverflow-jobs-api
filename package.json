@@ -4,6 +4,9 @@
   "author": "Dennis Tang <dennis@dennistang.net>",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "6.5.0"
+  }
   "repository": {
     "type": "git",
     "url": "https://github.com/dennistang/stackoverflow-jobs-api"
